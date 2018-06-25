@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>以太坊源码分析01-区块 | gunslingeratlarge&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="config.Initializer这个类是初始化一些东西的，初始化什么不太清楚。里面有三个方法，一个类的constructor，DatabaseVersionHandler，这个是跟升级后数据库的版本有关的可以先不用管。Initializer实现了BeanPostProcessor接口，这个接口来自于Spring，意思是说在实例化某个Bean之后可以通过它对bean进行一系列的操作:">
+<meta name="keywords" content="区块链,以太坊,java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="以太坊源码分析01-区块">
+<meta property="og:url" content="http://gunslingeratlarge.github.io/2018/04/10/以太坊源码分析01-区块/index.html">
+<meta property="og:site_name" content="gunslingeratlarge&#39;s blog">
+<meta property="og:description" content="config.Initializer这个类是初始化一些东西的，初始化什么不太清楚。里面有三个方法，一个类的constructor，DatabaseVersionHandler，这个是跟升级后数据库的版本有关的可以先不用管。Initializer实现了BeanPostProcessor接口，这个接口来自于Spring，意思是说在实例化某个Bean之后可以通过它对bean进行一系列的操作:">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-25T10:21:01.919Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="以太坊源码分析01-区块">
+<meta name="twitter:description" content="config.Initializer这个类是初始化一些东西的，初始化什么不太清楚。里面有三个方法，一个类的constructor，DatabaseVersionHandler，这个是跟升级后数据库的版本有关的可以先不用管。Initializer实现了BeanPostProcessor接口，这个接口来自于Spring，意思是说在实例化某个Bean之后可以通过它对bean进行一系列的操作:">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">gunslingeratlarge&#39;s blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/categories/区块链">区块链</a>
+                
+                    <a class="main-nav-link" href="/categories/Java">Java</a>
+                
+                    <a class="main-nav-link" href="/categories/前端">前端</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/pig.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories/区块链">区块链</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories/Java">Java</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories/前端">前端</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/pig.png" />
+            <h2 id="name">gunslingeratlarge</h2>
+            <h3 id="title">Blockchain &amp; Web development</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/gunslingeratlarge">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                90
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                37
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/gunslingeratlarge" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:wang.hongji@foxmail.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://wpa.qq.com/msgrd?v=3&uin=1279917365&site=qq&menu=yes" target="_blank" title="qq" class=tooltip>
+                            <i class="fa fa-qq"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-以太坊源码分析01-区块" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            以太坊源码分析01-区块
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/04/10/以太坊源码分析01-区块/">
+            <time datetime="2018-04-10T10:00:00.000Z" itemprop="datePublished">2018-04-10</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/区块链/">区块链</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/java/">java</a>, <a class="tag-link" href="/tags/以太坊/">以太坊</a>, <a class="tag-link" href="/tags/区块链/">区块链</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>config.Initializer<br>这个类是初始化一些东西的，初始化什么不太清楚。里面有三个方法，一个类的constructor，DatabaseVersionHandler，这个是跟升级后数据库的版本有关的可以先不用管。<br>Initializer实现了BeanPostProcessor接口，这个接口来自于Spring，意思是说在实例化某个Bean之后可以通过它对bean进行一系列的操作:</p>
+<a id="more"></a>
+<blockquote>
+<p>—&gt; Spring IOC容器实例化Bean<br>—&gt; 调用BeanPostProcessor的postProcessBeforeInitialization方法<br>—&gt; 调用bean实例的初始化方法<br>—&gt; 调用BeanPostProcessor的postProcessAfterInitialization方法  </p>
+</blockquote>
+<p>我们逐一地来看这里面的三个类，第一个<code>private void initConfig(SystemProperties config)</code>,这个是初始化配置的，可以初步理解为初始化区块链配置，然后使用了logger打印了一些信息，注意到这三句：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// forcing loading blockchain config</span></span><br><span class="line">config.getBlockchainConfig();</span><br><span class="line"></span><br><span class="line"><span class="comment">// forcing loading genesis to fail fast in case of error</span></span><br><span class="line">config.getGenesis();</span><br><span class="line"></span><br><span class="line"><span class="comment">// forcing reading private key or generating it in database directory</span></span><br><span class="line">config.nodeId();</span><br></pre></td></tr></table></figure></p>
+<p>我们先看这个SystemProperties是什么东西。  </p>
+<blockquote>
+<p>  Utility class to retrieve property values from the ethereumj.conf files  </p>
+</blockquote>
+<p> 懂了，从ethereumj.conf中读取配置信息的工具类，ethereumj.conf中包含了许多以太坊的配置信息，我们假装搞懂了然后继续。上面的三句一个是加载区块链的配置，一个是加载创世区块的信息，然后一个是获取节点的私钥？总之这里就是加载。<br> 后面两个就是BeanPostProcessor接口需要overwrite的方法，也就是调用initConfig这个私有方法。没啥。</p>
+<p> 然后继续看config.getBlockchainConfig()这个方法，这个方法里面首先获得了一个genesis的json表示，实际上就是一个叫做genesisJson的类，里面就是我们genesis.json文件的那些东西，nonce啊，难度啊之类的。它里面有一个属性叫做config，是通过setConfig传入参数来设置的，这个参数就是一个叫做GenesisConfig的类，这个配置文件配置一些什么乱七八糟的东西呢？<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Integer homesteadBlock;</span><br><span class="line"><span class="keyword">public</span> Integer daoForkBlock;</span><br><span class="line"><span class="keyword">public</span> Integer eip150Block;</span><br><span class="line"><span class="keyword">public</span> Integer eip155Block;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">boolean</span> daoForkSupport;</span><br><span class="line"><span class="keyword">public</span> Integer eip158Block;</span><br><span class="line"><span class="keyword">public</span> Integer byzantiumBlock;</span><br><span class="line"><span class="keyword">public</span> Integer chainId;</span><br></pre></td></tr></table></figure></p>
+<p>这里网上找到一段比较好的解释：<br>其中有很多都是针对以太坊历史发生的问题进行的专门配置。<br>ChainId可以预防replay攻击。<br>Homestead是以太坊发展蓝图中的一个阶段。第一阶段是以太坊区块链面世，代号为frontier，第二个阶段即为当前阶段，代号为Homestead（家园），第三阶段为Metropolis（大都会），大都会又细分为两个小阶段，第一个是Byzantium（拜占庭）硬分叉(引入新型零知识证明算法以及pos权益证明共识算法)，第二个是Constantinople（君士坦丁堡）硬分叉（以太坊正式应用pow和pos混合链，解决拜占庭引发的问题）。最后一个阶段代号Serenity（宁静），最终版本的以太坊稳定运行。<br>2017年6月18日，以太坊上DAO（去中心自治组织）的一次大危机做出的相应调整。感兴趣的可以自行谷百。<br>2017年10月16日，以太坊的一次Byzantium拜占庭硬分叉。<br>EIPs(Ethereum Improvement Proposals)，是以太坊更新改善的一些方案，对应后面的数字就是以太坊github源码issue的编号。<br>而一开始没有特别配置的话这些值都应该是null的。<br>所以在getBlockchainConfig中就写到，如果你的genesisJson有特别的配置的话，那么就用你的配置，如果没有的话，就用我的main/ropsten/testnet的配置。  </p>
+<p>我们来到这个方法的尾部：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (genesisJson.getConfig() != <span class="keyword">null</span> &amp;&amp; genesisJson.getConfig().headerValidators != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (GenesisConfig.HashValidator validator : genesisJson.getConfig().headerValidators) &#123;</span><br><span class="line">                    BlockHeaderValidator headerValidator = <span class="keyword">new</span> BlockHeaderValidator(<span class="keyword">new</span> BlockCustomHashRule(ByteUtil.hexStringToBytes(validator.hash)));</span><br><span class="line">                    blockchainConfig.getConfigForBlock(validator.number).headerValidators().add(</span><br><span class="line">                            Pair.of(validator.number, headerValidator));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果说genesisJson的config里面有头部验证器那么就验证，如果没有的话就算了。我大概现在是这么理解的。至于怎么验证的先不管它。<br>另外一个方法叫做getGenesis(),返回的类型是Genesis，继承Block，所以就是指的我们的创世块。它是怎么制造创世块的呢？就是通过读取BlockchainConfig和genesisJson这两个类的信息创造出块。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Genesis <span class="title">getGenesis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (genesis == <span class="keyword">null</span>) &#123;</span><br><span class="line">        genesis = GenesisLoader.parseGenesis(getBlockchainConfig(), getGenesisJson());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> genesis;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="WorldManager"><a href="#WorldManager" class="headerlink" title="WorldManager"></a>WorldManager</h4><p>“ * WorldManager is a singleton containing references to different parts of the system.”<br>我们先把WorldManager理解为一个大总管吧，在这个大总管的构造方法中调用了loadBlockchain()这个方法，搞了一系列复杂的操作，又是写到repository里面又是commit了，反正就是最后把这个我们创建的创世区块从内存中写到了数据库中去了。</p>
+<h4 id="Eth62"><a href="#Eth62" class="headerlink" title="Eth62"></a>Eth62</h4><p>然后我们转到网络，看看以太坊在网络上是怎么和节点间交互的。我们通过查看项目的jar包可以发现它使用了netty作为它的网络通信工具，netty是什么呢我也不知道但是我们简单百度之后发现它就可以简单理解为对java的socket和io的封装，反正就是处理socket的东西。然后我们发现Eth62里面有一个方法叫channelRead0卧槽这个是什么东西？我们随手百度一下发现这个是netty里的东西！<br>原来Eth62继承了netty的SimpleChannelInboundHandler，这个类可以通过加入泛型使得我们拦截特定类型的对象来进行处理,这里就是拦截的EthMasseage，就是以太坊自己定义的消息类型了。<br>所以我们就可以大概地理解为channelRead0是一个拦截/读取消息的方法，可以使得我们的节点处理特定的消息，有些什么消息呢？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (msg.getCommand()) &#123;</span><br><span class="line">           <span class="keyword">case</span> STATUS:</span><br><span class="line">               processStatus((StatusMessage) msg, ctx);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           <span class="keyword">case</span> NEW_BLOCK_HASHES:</span><br><span class="line">               processNewBlockHashes((NewBlockHashesMessage) msg);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           <span class="keyword">case</span> TRANSACTIONS:</span><br><span class="line">               processTransactions((TransactionsMessage) msg);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           <span class="keyword">case</span> GET_BLOCK_HEADERS:</span><br><span class="line">               processGetBlockHeaders((GetBlockHeadersMessage) msg);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           <span class="keyword">case</span> BLOCK_HEADERS:</span><br><span class="line">               processBlockHeaders((BlockHeadersMessage) msg);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           <span class="keyword">case</span> GET_BLOCK_BODIES:</span><br><span class="line">               processGetBlockBodies((GetBlockBodiesMessage) msg);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           <span class="keyword">case</span> BLOCK_BODIES:</span><br><span class="line">               processBlockBodies((BlockBodiesMessage) msg);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           <span class="keyword">case</span> NEW_BLOCK:</span><br><span class="line">               processNewBlock((NewBlockMessage) msg);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           <span class="keyword">default</span>:</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这些消息都是定义为的十六进制的数字其实，当收到这些消息之后我们这个节点就进行相应的操作了。具体有什么操作现在先不管。  </p>
+<p>现在我们看到SyncManager，这个类里面有这样一个类叫做ExecutorPipeline，这个是一个工具类，应该算是一个比较容易理解的了吧？看它的注释是说将待执行的任务排列到一个队列当中使得这些任务可以parallel地执行但是又保留他们的先后顺序。大概是这个意思我也没太看明白。<br>Queues execution tasks into a single pipeline where some tasks can be executed in parallel but preserve ‘messages’ order so the next task process messages on a single thread in the same order they were added to the previous executor.<br>在这个SyncManager里面似乎是有一个Sync队列的，新的块要加进来是会先到这个队列里面去排队，等待被加入到链上。就通过它的validateAndAddNewBlock方法。  </p>
+<p>这个SyncManager是继承了BlockDownloader，这个类就是一个块的下载器，它的init方法就会去起两个线程，然后这两个线程分别去下载区块头和区块体。<br>这里面涉及到java异步编程的内容，我们可以学习了java异步编程的内容后再来深入地看这部分。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://gunslingeratlarge.github.io/2018/04/10/以太坊源码分析01-区块/" data-id="cjiu46pxe005pswsx9bs22822" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2018/04/10/以太坊源码分析02-rlp/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    以太坊源码分析02-rlp part1
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2018/04/10/leetcode-781-Rabbits-in-Forest/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">leetcode 781. Rabbits in Forest</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2018/06/20/springboot如何读取外部配置信息/" class="title">springboot如何读取外部配置信息</a></p>
+                            <p class="item-date"><time datetime="2018-06-20T12:31:00.000Z" itemprop="datePublished">2018-06-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2018/06/20/springboot初始化/" class="title">springboot初始化</a></p>
+                            <p class="item-date"><time datetime="2018-06-20T04:30:00.000Z" itemprop="datePublished">2018-06-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/刷题/">刷题</a></p>
+                            <p class="item-title"><a href="/2018/06/11/78-Subsets/" class="title">78. Subsets</a></p>
+                            <p class="item-date"><time datetime="2018-06-11T11:32:00.000Z" itemprop="datePublished">2018-06-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/机器学习/">机器学习</a></p>
+                            <p class="item-title"><a href="/2018/06/06/Random-Forest-Regression-Cheatsheet/" class="title">Random Forest Regression Cheatsheet</a></p>
+                            <p class="item-date"><time datetime="2018-06-06T12:02:00.000Z" itemprop="datePublished">2018-06-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/python/">python</a></p>
+                            <p class="item-title"><a href="/2018/06/06/Design-Tree-Cheat-Sheet/" class="title">Decision Tree Cheat Sheet</a></p>
+                            <p class="item-date"><time datetime="2018-06-06T10:33:00.000Z" itemprop="datePublished">2018-06-06</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/刷题/">刷题</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/">数学</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数学/抽象代数/">抽象代数</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/概率统计/">概率统计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/线性代数/">线性代数</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">40</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">20</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Js/">Js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web开发/">Web开发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/easy/">easy</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gui/">gui</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javafx/">javafx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcdde/">leetcdde</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/">leetcode</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/medium/">medium</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/meduim/">meduim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nlp/">nlp</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nltk/">nltk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paxos/">paxos</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/以太坊/">以太坊</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/刷题/">刷题</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抽象代数/">抽象代数</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/概率统计/">概率统计</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神经网络/">神经网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Java/" style="font-size: 17.14px;">Java</a> <a href="/tags/Js/" style="font-size: 10px;">Js</a> <a href="/tags/Spring/" style="font-size: 10.71px;">Spring</a> <a href="/tags/Web开发/" style="font-size: 10px;">Web开发</a> <a href="/tags/css/" style="font-size: 13.57px;">css</a> <a href="/tags/easy/" style="font-size: 12.86px;">easy</a> <a href="/tags/gui/" style="font-size: 10px;">gui</a> <a href="/tags/java/" style="font-size: 12.14px;">java</a> <a href="/tags/javafx/" style="font-size: 10px;">javafx</a> <a href="/tags/js/" style="font-size: 10.71px;">js</a> <a href="/tags/leetcdde/" style="font-size: 10px;">leetcdde</a> <a href="/tags/leetcode/" style="font-size: 19.29px;">leetcode</a> <a href="/tags/medium/" style="font-size: 15.71px;">medium</a> <a href="/tags/meduim/" style="font-size: 10px;">meduim</a> <a href="/tags/mybatis/" style="font-size: 10.71px;">mybatis</a> <a href="/tags/nlp/" style="font-size: 10.71px;">nlp</a> <a href="/tags/nltk/" style="font-size: 10px;">nltk</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 12.14px;">nodejs</a> <a href="/tags/paxos/" style="font-size: 10px;">paxos</a> <a href="/tags/python/" style="font-size: 14.29px;">python</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/以太坊/" style="font-size: 13.57px;">以太坊</a> <a href="/tags/其他/" style="font-size: 10px;">其他</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/刷题/" style="font-size: 20px;">刷题</a> <a href="/tags/前端/" style="font-size: 15px;">前端</a> <a href="/tags/区块链/" style="font-size: 16.43px;">区块链</a> <a href="/tags/抽象代数/" style="font-size: 17.86px;">抽象代数</a> <a href="/tags/数学/" style="font-size: 19.29px;">数学</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/机器学习/" style="font-size: 18.57px;">机器学习</a> <a href="/tags/概率统计/" style="font-size: 10px;">概率统计</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/线性代数/" style="font-size: 10.71px;">线性代数</a> <a href="/tags/设计模式/" style="font-size: 11.43px;">设计模式</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://halfopen.github.io">halfopen</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 gsal<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
