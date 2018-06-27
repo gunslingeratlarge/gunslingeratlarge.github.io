@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>xampp安装注意事项 | gunslingeratlarge&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="配置php环境@(php)[php，开发]环境安装：   XAMPP：v3.2.2(集成了PHP、Apache、Mysql) 数据库(工具使用：Navicat for mysql)：    建立连接的时候不要设置密码；   连接服务器上的数据库： 连接信息：  在本地建立连接运行sql文件greenLand1.sql；">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xampp安装注意事项">
+<meta property="og:url" content="http://gunslingeratlarge.github.io/2018/06/26/xampp安装注意事项/index.html">
+<meta property="og:site_name" content="gunslingeratlarge&#39;s blog">
+<meta property="og:description" content="配置php环境@(php)[php，开发]环境安装：   XAMPP：v3.2.2(集成了PHP、Apache、Mysql) 数据库(工具使用：Navicat for mysql)：    建立连接的时候不要设置密码；   连接服务器上的数据库： 连接信息：  在本地建立连接运行sql文件greenLand1.sql；">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2018/06/26/5b31f00372181.png">
+<meta property="og:updated_time" content="2018-06-26T12:44:08.763Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="xampp安装注意事项">
+<meta name="twitter:description" content="配置php环境@(php)[php，开发]环境安装：   XAMPP：v3.2.2(集成了PHP、Apache、Mysql) 数据库(工具使用：Navicat for mysql)：    建立连接的时候不要设置密码；   连接服务器上的数据库： 连接信息：  在本地建立连接运行sql文件greenLand1.sql；">
+<meta name="twitter:image" content="https://i.loli.net/2018/06/26/5b31f00372181.png">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">gunslingeratlarge&#39;s blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/categories/区块链">区块链</a>
+                
+                    <a class="main-nav-link" href="/categories/Java">Java</a>
+                
+                    <a class="main-nav-link" href="/categories/前端">前端</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/pig.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories/区块链">区块链</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories/Java">Java</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories/前端">前端</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/pig.png" />
+            <h2 id="name">gunslingeratlarge</h2>
+            <h3 id="title">Blockchain &amp; Web development</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/gunslingeratlarge">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                92
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                36
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/gunslingeratlarge" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="mailto:wang.hongji@foxmail.com" target="_blank" title="envelope" class=tooltip>
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://wpa.qq.com/msgrd?v=3&uin=1279917365&site=qq&menu=yes" target="_blank" title="qq" class=tooltip>
+                            <i class="fa fa-qq"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-xampp安装注意事项" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            xampp安装注意事项
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/06/26/xampp安装注意事项/">
+            <time datetime="2018-06-26T12:43:00.000Z" itemprop="datePublished">2018-06-26</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/php/">php</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/php/">php</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="配置php环境"><a href="#配置php环境" class="headerlink" title="配置php环境"></a>配置php环境</h2><p>@(php)[php，开发]<br>环境安装：  </p>
+<p>XAMPP：v3.2.2<br>(集成了PHP、Apache、Mysql)</p>
+<p>数据库(工具使用：Navicat for mysql)：  </p>
+<ol>
+<li>建立连接的时候不要设置密码；  </li>
+<li><p>连接服务器上的数据库：<br> 连接信息：</p>
+</li>
+<li><p>在本地建立连接运行sql文件greenLand1.sql；</p>
+<a id="more"></a>
+<p>Apache部分的使用;<br> 两个配置文件需要修改：(注意：<strong>这两个文件都不是origin文件夹下的</strong>)</p>
+<ol>
+<li>http.conf<br>  在localhost:80下面添加localhost:8081修改端口号；  </li>
+<li>http-vhost.conf<br>地址在D:\Program Files\XAMPP\apache\conf\extra<br>需要添加的内容是：</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">VirtualHost</span> *<span class="attr">:8081</span>&gt;</span></span><br><span class="line">	DocumentRoot "E:/project/greenland_web/public"</span><br><span class="line">	<span class="tag">&lt;<span class="name">Directory</span>  "<span class="attr">E:</span>/<span class="attr">project</span>/<span class="attr">greenland_web</span>/<span class="attr">public</span>"&gt;</span></span><br><span class="line">		Require all granted</span><br><span class="line">	<span class="tag">&lt;/<span class="name">Directory</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">VirtualHost</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>问题：<br>    Apache和项目的关系，怎么丢给Apache。  </p>
+<p>项目怎么跑起来：  </p>
+<pre><code>1. 现在Apache的配置文件里配置要暴露的端口  
+2. 在vhost文件里配置好资源的位置。  
+外界因此可以通过端口访问到那个资源。  
+</code></pre><p>逻辑：<br>    浏览器——&gt;Apache——&gt;php——&gt;(将php设置环境变量，即可以在全局调用，在项目的public文件夹执行命令：；)——&gt;public下面有一个index.php文件(入口文件)——&gt;Controller——&gt;Controller经过一系列处理返回经过渲染后的页面。  </p>
+<p>PhpStrom 2018版，到网上自己找破解码；（需要将hosts更改使得其无法连接验证网站）<br>    调试安装：xDebug  </p>
+<pre><code>1. 在Chrome里安装xDebug插件。  
+2. 在PhpStrom里配置xDebug。  
+用于断点调试。  
+</code></pre><p>还要学会在PhpStrom中进行拉取项目<br>            监听状态</p>
+<p>gitWindows桌面程序：<br>    TortoiseGit  </p>
+<p>问题1：<br>    那个命令是什么？<br>    在public文件夹下执行：<br>        php -S localhost:8080   </p>
+<p>问题2：<br>    浏览器中的<a href="http://localhost:8081/index/register/index.html" target="_blank" rel="noopener">http://localhost:8081/index/register/index.html</a><br>    无法解析访问；<br>    原因：  </p>
+<pre><code>    1. 项目根目录下有个文件：.htaccess里有正则式；  
+    2. httpd.conf中有个配置：  
+    LoadModule rewrite_module modules/mod_rewrite.so  
+    3. 要使得那个正则式可读，还要将httpd.conf中的以下文件做修改(修改None为All)  
+    4.  
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory /&gt;</span><br><span class="line">    AllowOverride all</span><br><span class="line">    Require all denied</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+</code></pre><p>问题3：<br>    在linux下，运行项目会有Access Forbidden.<br>    解决方案如上<br><img src="https://i.loli.net/2018/06/26/5b31f00372181.png" alt="clipboard.png"></p>
+<p>每一次更改配置文件之后都要重启服务器；  </p>
+<p>问题4：install模块缺失<br>在E:\project\greenland_web\data下新建一个空白文件install.lock  </p>
+<p>问题5：更改了http-vhost.conf之后不生效。原因是在httpd.conf中有一个include http-vhost.conf的配置在Linux下被default注释掉了。  </p>
+<p>问题6：在windows下安装报无法找到-n文件错误，提示安装Microsoft visual C++ 2018，安装了之后还是不行。就<strong>按照默认路径安装</strong>即可解决此问题。  </p>
+<p>问题7：<br>Apache Service detected with wrong path.Change XAMPP Apache and Control Panel settings orUninstall/disable the other service manually first<br>Found Path: “H:\program files\xampp\apache\bin\httpd.exe” -k runservice<br>Expected Path: “h:\xampp\apache\bin\httpd.exe” -k runservice<br>解决方案：首先，检查一下自己的环境变量的path中是否还残留以前自己添加的xampp路径，如果有就删掉，如果没有就进行下一步。<br>然后就要进入自己的注册表。（regedit）点击<code>HKEY_LOCAL_MACHINE----&gt;SYSTEM----&gt;currentControlSet----&gt;Services----&gt;找到Apache2.4</code><br>ImagePath看看那个路径是不是以前那个版本的路径，如果是就选中ImagePath点击右键修改，把xampp里面提示的Expected Path后面的路径粘贴进去，然后确定。<br>其他的同样。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://gunslingeratlarge.github.io/2018/06/26/xampp安装注意事项/" data-id="cjix84vhg005lhgsx38egpyd3" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2018/06/27/python中使用wordcloud/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    python中使用wordcloud
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2018/06/26/Neural-Network-Cheat-Sheet/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Neural Network Cheat Sheet</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/机器学习/">机器学习</a></p>
+                            <p class="item-title"><a href="/2018/06/27/python中使用wordcloud/" class="title">python中使用wordcloud</a></p>
+                            <p class="item-date"><time datetime="2018-06-27T14:44:00.000Z" itemprop="datePublished">2018-06-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/php/">php</a></p>
+                            <p class="item-title"><a href="/2018/06/26/xampp安装注意事项/" class="title">xampp安装注意事项</a></p>
+                            <p class="item-date"><time datetime="2018-06-26T12:43:00.000Z" itemprop="datePublished">2018-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/机器学习/">机器学习</a></p>
+                            <p class="item-title"><a href="/2018/06/26/Neural-Network-Cheat-Sheet/" class="title">Neural Network Cheat Sheet</a></p>
+                            <p class="item-date"><time datetime="2018-06-26T07:44:00.000Z" itemprop="datePublished">2018-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2018/06/20/springboot如何读取外部配置信息/" class="title">springboot如何读取外部配置信息</a></p>
+                            <p class="item-date"><time datetime="2018-06-20T12:31:00.000Z" itemprop="datePublished">2018-06-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Java/">Java</a></p>
+                            <p class="item-title"><a href="/2018/06/20/springboot初始化/" class="title">springboot初始化</a></p>
+                            <p class="item-date"><time datetime="2018-06-20T04:30:00.000Z" itemprop="datePublished">2018-06-20</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/刷题/">刷题</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/">数学</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数学/抽象代数/">抽象代数</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/概率统计/">概率统计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/线性代数/">线性代数</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">13</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">20</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Js/">Js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web开发/">Web开发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/easy/">easy</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gui/">gui</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javafx/">javafx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcdde/">leetcdde</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/">leetcode</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/medium/">medium</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/meduim/">meduim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nlp/">nlp</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nltk/">nltk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paxos/">paxos</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/以太坊/">以太坊</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/刷题/">刷题</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抽象代数/">抽象代数</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/概率统计/">概率统计</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神经网络/">神经网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Java/" style="font-size: 17.5px;">Java</a> <a href="/tags/Js/" style="font-size: 10px;">Js</a> <a href="/tags/Spring/" style="font-size: 10.83px;">Spring</a> <a href="/tags/Web开发/" style="font-size: 10px;">Web开发</a> <a href="/tags/css/" style="font-size: 14.17px;">css</a> <a href="/tags/easy/" style="font-size: 13.33px;">easy</a> <a href="/tags/gui/" style="font-size: 10px;">gui</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/javafx/" style="font-size: 10px;">javafx</a> <a href="/tags/js/" style="font-size: 10.83px;">js</a> <a href="/tags/leetcdde/" style="font-size: 10px;">leetcdde</a> <a href="/tags/leetcode/" style="font-size: 19.17px;">leetcode</a> <a href="/tags/medium/" style="font-size: 15.83px;">medium</a> <a href="/tags/meduim/" style="font-size: 10px;">meduim</a> <a href="/tags/mybatis/" style="font-size: 10.83px;">mybatis</a> <a href="/tags/nlp/" style="font-size: 10.83px;">nlp</a> <a href="/tags/nltk/" style="font-size: 10px;">nltk</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/paxos/" style="font-size: 10px;">paxos</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/以太坊/" style="font-size: 14.17px;">以太坊</a> <a href="/tags/其他/" style="font-size: 10px;">其他</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/刷题/" style="font-size: 20px;">刷题</a> <a href="/tags/前端/" style="font-size: 15px;">前端</a> <a href="/tags/区块链/" style="font-size: 16.67px;">区块链</a> <a href="/tags/抽象代数/" style="font-size: 18.33px;">抽象代数</a> <a href="/tags/数学/" style="font-size: 19.17px;">数学</a> <a href="/tags/机器学习/" style="font-size: 20px;">机器学习</a> <a href="/tags/概率统计/" style="font-size: 10px;">概率统计</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/线性代数/" style="font-size: 10.83px;">线性代数</a> <a href="/tags/设计模式/" style="font-size: 11.67px;">设计模式</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://halfopen.github.io">halfopen</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 gsal<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

@@ -164,11 +164,11 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                90
+                92
                 <span>文章</span>
             </div>
             <div class="article-info-block">
-                37
+                36
                 <span>标签</span>
             </div>
         </div>
@@ -205,6 +205,399 @@
 
             
             <section id="main">
+    <article id="post-multiple-linear-regression-cheatsheet" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2018/06/06/multiple-linear-regression-cheatsheet/">Multiple Linear Regression Cheatsheet</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/06/06/multiple-linear-regression-cheatsheet/">
+            <time datetime="2018-06-06T02:20:00.000Z" itemprop="datePublished">2018-06-06</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/python/">python</a>, <a class="tag-link" href="/tags/机器学习/">机器学习</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="多元线性回归"><a href="#多元线性回归" class="headerlink" title="多元线性回归"></a>多元线性回归</h2><p>线性不是用来讲x的，是用来讲系数的。<br>需要注意要省略掉dummy variable中的一位来避免dummy variable trap。<br>import matplotlib.pyplot as plt</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Created on Tue Jun  5 16:45:51 2018</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">@author: Gunslinger</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#import libraries</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="comment">#readfile -pd</span></span><br><span class="line">dataset = pd.read_csv(<span class="string">"50_Startups.csv"</span>)</span><br><span class="line">X = dataset.iloc[:,:<span class="number">-1</span>].values</span><br><span class="line">y = dataset.iloc[:,<span class="number">-1</span>].values</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#one hot encode</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder,OneHotEncoder</span><br><span class="line">labelencoder = LabelEncoder()</span><br><span class="line">X[:,<span class="number">-1</span>] =  labelencoder.fit_transform(X[:,<span class="number">-1</span>])</span><br><span class="line">onehotencoder = OneHotEncoder(categorical_features=[<span class="number">3</span>])</span><br><span class="line">X = onehotencoder.fit_transform(X).toarray()</span><br><span class="line"></span><br><span class="line"><span class="comment">#avoid dummy variable trap</span></span><br><span class="line">X = X[:,<span class="number">1</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># train test split</span></span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=<span class="number">0.2</span>,random_state = <span class="number">44</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#fit model (adding ones before the first column to address the const value)</span></span><br><span class="line"><span class="keyword">import</span> statsmodels.formula.api <span class="keyword">as</span> sm</span><br><span class="line">X = np.append(np.ones((<span class="number">50</span>,<span class="number">1</span>)).astype(int),X,axis=<span class="number">1</span>)</span><br><span class="line">X_opt = X[:,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]]</span><br><span class="line">regressor_OLS = sm.OLS(endog = y, exog=X_opt).fit()</span><br><span class="line">regressor_OLS.summary()</span><br><span class="line"></span><br><span class="line"><span class="comment">#delete x2:dummy 2</span></span><br><span class="line">X_opt = X[:,[<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]]</span><br><span class="line">regressor_OLS = sm.OLS(endog = y, exog=X_opt).fit()</span><br><span class="line">regressor_OLS.summary()</span><br><span class="line"></span><br><span class="line"><span class="comment">#delete x1</span></span><br><span class="line">X_opt = X[:,[<span class="number">0</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]]</span><br><span class="line">regressor_OLS = sm.OLS(endog = y, exog=X_opt).fit()</span><br><span class="line">regressor_OLS.summary()</span><br><span class="line"></span><br><span class="line"><span class="comment">#delete x1</span></span><br><span class="line">X_opt = X[:,[<span class="number">0</span>,<span class="number">3</span>,<span class="number">5</span>]]</span><br><span class="line">regressor_OLS = sm.OLS(endog = y, exog=X_opt).fit()</span><br><span class="line">regressor_OLS.summary()</span><br></pre></td></tr></table></figure>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://gunslingeratlarge.github.io/2018/06/06/multiple-linear-regression-cheatsheet/" data-id="cjix84vgk0047hgsxq2ghzkqs" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-simple-linear-regression-cheatsheet" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2018/06/05/simple-linear-regression-cheatsheet/">Simple Linear Regression Cheatsheet</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/06/05/simple-linear-regression-cheatsheet/">
+            <time datetime="2018-06-05T01:35:00.000Z" itemprop="datePublished">2018-06-05</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/python/">python</a>, <a class="tag-link" href="/tags/机器学习/">机器学习</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>非常简单，只需要将训练数据（包括X和y喂给regressor就可以了）</p>
+<h2 id="cheatsheet"><a href="#cheatsheet" class="headerlink" title="cheatsheet"></a>cheatsheet</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Simple Linear Regression</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Importing the libraries</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="comment"># Importing the dataset</span></span><br><span class="line">dataset = pd.read_csv(<span class="string">'Salary_Data.csv'</span>)</span><br><span class="line">X = dataset.iloc[:, :<span class="number">-1</span>].values</span><br><span class="line">y = dataset.iloc[:, <span class="number">1</span>].values</span><br><span class="line"></span><br><span class="line"><span class="comment"># Splitting the dataset into the Training set and Test set</span></span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = <span class="number">1</span>/<span class="number">3</span>, random_state = <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Feature Scaling</span></span><br><span class="line"><span class="string">"""from sklearn.preprocessing import StandardScaler</span></span><br><span class="line"><span class="string">sc_X = StandardScaler()</span></span><br><span class="line"><span class="string">X_train = sc_X.fit_transform(X_train)</span></span><br><span class="line"><span class="string">X_test = sc_X.transform(X_test)</span></span><br><span class="line"><span class="string">sc_y = StandardScaler()</span></span><br><span class="line"><span class="string">y_train = sc_y.fit_transform(y_train)"""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Fitting Simple Linear Regression to the Training set</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line">regressor = LinearRegression()</span><br><span class="line">regressor.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Predicting the Test set results</span></span><br><span class="line">y_pred = regressor.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Visualising the Training set results</span></span><br><span class="line">plt.scatter(X_train, y_train, color = <span class="string">'red'</span>)</span><br><span class="line">plt.plot(X_train, regressor.predict(X_train), color = <span class="string">'blue'</span>)</span><br><span class="line">plt.title(<span class="string">'Salary vs Experience (Training set)'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Years of Experience'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Salary'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Visualising the Test set results</span></span><br><span class="line">plt.scatter(X_test, y_test, color = <span class="string">'red'</span>)</span><br><span class="line">plt.plot(X_train, regressor.predict(X_train), color = <span class="string">'blue'</span>)</span><br><span class="line">plt.title(<span class="string">'Salary vs Experience (Test set)'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Years of Experience'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Salary'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>如果直接plot的话就是画线，而scatter则是画散点图。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://gunslingeratlarge.github.io/2018/06/05/simple-linear-regression-cheatsheet/" data-id="cjix84vgy004thgsx56d322bh" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-data-preprocessing-cheatsheet" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2018/06/04/data-preprocessing-cheatsheet/">Data Preprocessing Cheatsheet</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/06/04/data-preprocessing-cheatsheet/">
+            <time datetime="2018-06-04T13:28:00.000Z" itemprop="datePublished">2018-06-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/python/">python</a>, <a class="tag-link" href="/tags/机器学习/">机器学习</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><h2 id="数据预处理流程"><a href="#数据预处理流程" class="headerlink" title="数据预处理流程"></a>数据预处理流程</h2><p>首先是读取数据，数据读完了之后有缺失数据，那肯定要把缺失数据补充完整。数据补充完整之后对于categorical的变量要将它转成numerical的或者是one-hot编码（dummy variables）。这样我们的数据看起来就比较舒服。<br>接下来就要划分好自变量和因变量，并且划分训练集和测试集，那么最后再做一下feature scaling，将这些特征都放缩到差不多的范围里来。<br></p>
+            <p class="article-more-link">
+                <a href="/2018/06/04/data-preprocessing-cheatsheet/#more">查看更多</a>
+            </p>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://gunslingeratlarge.github.io/2018/06/04/data-preprocessing-cheatsheet/" data-id="cjix84ve70021hgsxk120i46v" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-如何build一个模型" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -270,7 +663,7 @@
 
 </div>
 
-    <a data-url="http://gunslingeratlarge.github.io/2018/06/03/如何build一个模型/" data-id="cjiu46pxw006kswsxl6um6z6v" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://gunslingeratlarge.github.io/2018/06/03/如何build一个模型/" data-id="cjix84vi3006lhgsxsb17s99v" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -401,7 +794,7 @@
 
 </div>
 
-    <a data-url="http://gunslingeratlarge.github.io/2018/06/02/java构造方法调用/" data-id="cjiu46pv1002fswsx6wsiw4gk" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://gunslingeratlarge.github.io/2018/06/02/java构造方法调用/" data-id="cjix84veh002ehgsx5h1gf780" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -532,7 +925,7 @@
 
 </div>
 
-    <a data-url="http://gunslingeratlarge.github.io/2018/06/02/java类加载器/" data-id="cjiu46pv4002kswsxi2048b5m" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://gunslingeratlarge.github.io/2018/06/02/java类加载器/" data-id="cjix84veo002lhgsxnrcxpm7a" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -664,7 +1057,7 @@
 
 </div>
 
-    <a data-url="http://gunslingeratlarge.github.io/2018/05/31/设计模式-part5-结构模式（下）/" data-id="cjiu46pz3008jswsxkemqfhzb" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://gunslingeratlarge.github.io/2018/05/31/设计模式-part5-结构模式（下）/" data-id="cjix84vjw008nhgsxrdi5mbtf" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -786,7 +1179,7 @@
 
 </div>
 
-    <a data-url="http://gunslingeratlarge.github.io/2018/05/30/BMI-Calculator/" data-id="cjiu46pt7000bswsxfzj4xgpe" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://gunslingeratlarge.github.io/2018/05/30/BMI-Calculator/" data-id="cjix84vce000bhgsx6z4i46rq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -917,7 +1310,7 @@
 
 </div>
 
-    <a data-url="http://gunslingeratlarge.github.io/2018/05/28/avafx-p/" data-id="cjiu46pug001wswsx37yrpjce" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://gunslingeratlarge.github.io/2018/05/28/avafx-p/" data-id="cjix84vea0026hgsxaoojcmnn" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1053,414 +1446,7 @@
 
 </div>
 
-    <a data-url="http://gunslingeratlarge.github.io/2018/05/28/NLTK-p-2/" data-id="cjiu46ptp000uswsxbdv1a6rm" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-NLTK" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2018/05/28/NLTK/">NLTK </a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/05/28/NLTK/">
-            <time datetime="2018-05-28T02:37:00.000Z" itemprop="datePublished">2018-05-28</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/nlp/">nlp</a>, <a class="tag-link" href="/tags/机器学习/">机器学习</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>conda install nltk</p>
-<ol>
-<li>tokenize：分词</li>
-<li>stopwords：停用词</li>
-<li>stem：取词根</li>
-<li>part of speech tagging：词性标注</li>
-<li>chunking：分块</li>
-<li>chinking： 分块的对立面，从chunking中去除某些部分</li>
-<li>Name Entity Recognition：识别名词（词组）<br>本篇笔记基于<a href="https://pythonprogramming.net/tokenizing-words-sentences-nltk-tutorial/" target="_blank" rel="noopener">https://pythonprogramming.net/tokenizing-words-sentences-nltk-tutorial/</a> 完成。</li>
-</ol></p>
-            <p class="article-more-link">
-                <a href="/2018/05/28/NLTK/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://gunslingeratlarge.github.io/2018/05/28/NLTK/" data-id="cjiu46ptr000yswsxx2mvx2oh" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-SVD" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2018/05/27/SVD/">SVD</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/05/27/SVD/">
-            <time datetime="2018-05-27T05:04:00.000Z" itemprop="datePublished">2018-05-27</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/数学/">数学</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数学/线性代数/">线性代数</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/机器学习/">机器学习</a>, <a class="tag-link" href="/tags/线性代数/">线性代数</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>SVD指的是Singular Value Decomposition，奇异值分解。简单理解就是把一个矩阵（m × n）的矩阵分解为3部分，即$u∑v^t$。SVD是PCA即主成分分析的一种，就是保留矩阵中比较重要的部分信息，去掉不那么重要的信息。这里面的u和t是正交矩阵，v是对角线矩阵（diagonal matrix），并且每一个元素非负。<a href="https://www.youtube.com/watch?v=mBcLRGuAFUk" target="_blank" rel="noopener">https://www.youtube.com/watch?v=mBcLRGuAFUk</a>  这个视频在简短的时间对svd作了介绍。</p>
-<h2 id="如何进行SVD呢？"><a href="#如何进行SVD呢？" class="headerlink" title="如何进行SVD呢？"></a>如何进行SVD呢？</h2><p><a href="https://www.youtube.com/watch?v=cOUTpqlX-Xs" target="_blank" rel="noopener">https://www.youtube.com/watch?v=cOUTpqlX-Xs</a> 这个视频很好地演示了如何对一个简单的矩阵手动进行svd。主要的思路就是在等式两边同时乘以v的转置，就把问题转化为了就特征向量和特征值的问题了。目前我还没有搞清楚的点是，正交矩阵有些什么特点，为什么  </p>
-<script type="math/tex; mode=display">A\cdot A^t = I</script><p>以及求出某个矩阵的特征值之后怎样求出它的特征向量？除此之外SVD是怎样应用到机器学习上的，也值得进一步的了解。</p>
-<h2 id="正交矩阵"><a href="#正交矩阵" class="headerlink" title="正交矩阵"></a>正交矩阵</h2><p>首先，什么是正交矩阵。正交矩阵一定是一个方阵。它的每一列都是一个向量，这个向量和其他的这个矩阵里的列向量是正交的。（点乘起来是0，自己和自己点乘是1（这个列向量单位化为1））。正交矩阵的性质：</p>
-<script type="math/tex; mode=display">Q\cdot Q^t = I</script><p>也就是<script type="math/tex">Q^{-1} = Q^t</script></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://gunslingeratlarge.github.io/2018/05/27/SVD/" data-id="cjiu46puc001pswsxyfga9418" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-设计模式-part4-结构模式-（上）" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2018/05/23/设计模式-part4-结构模式-（上）/">设计模式 part4  结构模式 （上）</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/05/23/设计模式-part4-结构模式-（上）/">
-            <time datetime="2018-05-23T04:06:00.000Z" itemprop="datePublished">2018-05-23</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Java/">Java</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Java/">Java</a>, <a class="tag-link" href="/tags/设计模式/">设计模式</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>适配器 桥接 组合 装饰者</p>
-<h2 id="适配器（Adapter）"><a href="#适配器（Adapter）" class="headerlink" title="适配器（Adapter）"></a>适配器（Adapter）</h2><p>把一个类的接口变换成客户端所期待的另一种接口，使因接口不匹配的类能一起工作。<br>变压器模式——把一种电压变换成另一种电压。或者类似我们出国用的插口转换器。<br>又如HDMI转VGA。又叫包装模式，wrapper模式。一般是将被适配者包在里面。  </p>
-<h3 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h3><p>类适配器：需要利用多重继承<br>对象适配器：Adapter把Adaptee包进来，聚合进来。用得比较广泛。比类适配器用得更多。因为多重继承是不太好的。<br></p>
-            <p class="article-more-link">
-                <a href="/2018/05/23/设计模式-part4-结构模式-（上）/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://gunslingeratlarge.github.io/2018/05/23/设计模式-part4-结构模式-（上）/" data-id="cjiu46pz0008fswsxodyzuwr0" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://gunslingeratlarge.github.io/2018/05/28/NLTK-p-2/" data-id="cjix84vd1000uhgsxhnyjnwwx" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1537,7 +1523,7 @@
 
 
     <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/">下一页 &raquo;</a>
+        <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/">下一页 &raquo;</a>
     </nav>
 </section>
             
@@ -1549,6 +1535,33 @@
         <h3 class="widget-title">最新文章</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/机器学习/">机器学习</a></p>
+                            <p class="item-title"><a href="/2018/06/27/python中使用wordcloud/" class="title">python中使用wordcloud</a></p>
+                            <p class="item-date"><time datetime="2018-06-27T14:44:00.000Z" itemprop="datePublished">2018-06-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/php/">php</a></p>
+                            <p class="item-title"><a href="/2018/06/26/xampp安装注意事项/" class="title">xampp安装注意事项</a></p>
+                            <p class="item-date"><time datetime="2018-06-26T12:43:00.000Z" itemprop="datePublished">2018-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/机器学习/">机器学习</a></p>
+                            <p class="item-title"><a href="/2018/06/26/Neural-Network-Cheat-Sheet/" class="title">Neural Network Cheat Sheet</a></p>
+                            <p class="item-date"><time datetime="2018-06-26T07:44:00.000Z" itemprop="datePublished">2018-06-26</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -1568,33 +1581,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/刷题/">刷题</a></p>
-                            <p class="item-title"><a href="/2018/06/11/78-Subsets/" class="title">78. Subsets</a></p>
-                            <p class="item-date"><time datetime="2018-06-11T11:32:00.000Z" itemprop="datePublished">2018-06-11</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/机器学习/">机器学习</a></p>
-                            <p class="item-title"><a href="/2018/06/06/Random-Forest-Regression-Cheatsheet/" class="title">Random Forest Regression Cheatsheet</a></p>
-                            <p class="item-date"><time datetime="2018-06-06T12:02:00.000Z" itemprop="datePublished">2018-06-06</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/python/">python</a></p>
-                            <p class="item-title"><a href="/2018/06/06/Design-Tree-Cheat-Sheet/" class="title">Decision Tree Cheat Sheet</a></p>
-                            <p class="item-date"><time datetime="2018-06-06T10:33:00.000Z" itemprop="datePublished">2018-06-06</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -1604,7 +1590,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/刷题/">刷题</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/">数学</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数学/抽象代数/">抽象代数</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/概率统计/">概率统计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/线性代数/">线性代数</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/刷题/">刷题</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/">数学</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数学/抽象代数/">抽象代数</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/概率统计/">概率统计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数学/线性代数/">线性代数</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">13</span></li></ul>
         </div>
     </div>
 
@@ -1613,7 +1599,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">40</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">20</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">20</span></li></ul>
         </div>
     </div>
 
@@ -1622,7 +1608,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Js/">Js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web开发/">Web开发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/easy/">easy</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gui/">gui</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javafx/">javafx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcdde/">leetcdde</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/">leetcode</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/medium/">medium</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/meduim/">meduim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nlp/">nlp</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nltk/">nltk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paxos/">paxos</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/以太坊/">以太坊</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/刷题/">刷题</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抽象代数/">抽象代数</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/概率统计/">概率统计</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神经网络/">神经网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">3</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Js/">Js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web开发/">Web开发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/easy/">easy</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gui/">gui</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javafx/">javafx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcdde/">leetcdde</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/">leetcode</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/medium/">medium</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/meduim/">meduim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nlp/">nlp</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nltk/">nltk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paxos/">paxos</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/以太坊/">以太坊</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/刷题/">刷题</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抽象代数/">抽象代数</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数学/">数学</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/概率统计/">概率统计</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神经网络/">神经网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -1631,7 +1617,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/Java/" style="font-size: 17.14px;">Java</a> <a href="/tags/Js/" style="font-size: 10px;">Js</a> <a href="/tags/Spring/" style="font-size: 10.71px;">Spring</a> <a href="/tags/Web开发/" style="font-size: 10px;">Web开发</a> <a href="/tags/css/" style="font-size: 13.57px;">css</a> <a href="/tags/easy/" style="font-size: 12.86px;">easy</a> <a href="/tags/gui/" style="font-size: 10px;">gui</a> <a href="/tags/java/" style="font-size: 12.14px;">java</a> <a href="/tags/javafx/" style="font-size: 10px;">javafx</a> <a href="/tags/js/" style="font-size: 10.71px;">js</a> <a href="/tags/leetcdde/" style="font-size: 10px;">leetcdde</a> <a href="/tags/leetcode/" style="font-size: 19.29px;">leetcode</a> <a href="/tags/medium/" style="font-size: 15.71px;">medium</a> <a href="/tags/meduim/" style="font-size: 10px;">meduim</a> <a href="/tags/mybatis/" style="font-size: 10.71px;">mybatis</a> <a href="/tags/nlp/" style="font-size: 10.71px;">nlp</a> <a href="/tags/nltk/" style="font-size: 10px;">nltk</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 12.14px;">nodejs</a> <a href="/tags/paxos/" style="font-size: 10px;">paxos</a> <a href="/tags/python/" style="font-size: 14.29px;">python</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/以太坊/" style="font-size: 13.57px;">以太坊</a> <a href="/tags/其他/" style="font-size: 10px;">其他</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/刷题/" style="font-size: 20px;">刷题</a> <a href="/tags/前端/" style="font-size: 15px;">前端</a> <a href="/tags/区块链/" style="font-size: 16.43px;">区块链</a> <a href="/tags/抽象代数/" style="font-size: 17.86px;">抽象代数</a> <a href="/tags/数学/" style="font-size: 19.29px;">数学</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/机器学习/" style="font-size: 18.57px;">机器学习</a> <a href="/tags/概率统计/" style="font-size: 10px;">概率统计</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/线性代数/" style="font-size: 10.71px;">线性代数</a> <a href="/tags/设计模式/" style="font-size: 11.43px;">设计模式</a>
+            <a href="/tags/Java/" style="font-size: 17.5px;">Java</a> <a href="/tags/Js/" style="font-size: 10px;">Js</a> <a href="/tags/Spring/" style="font-size: 10.83px;">Spring</a> <a href="/tags/Web开发/" style="font-size: 10px;">Web开发</a> <a href="/tags/css/" style="font-size: 14.17px;">css</a> <a href="/tags/easy/" style="font-size: 13.33px;">easy</a> <a href="/tags/gui/" style="font-size: 10px;">gui</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/javafx/" style="font-size: 10px;">javafx</a> <a href="/tags/js/" style="font-size: 10.83px;">js</a> <a href="/tags/leetcdde/" style="font-size: 10px;">leetcdde</a> <a href="/tags/leetcode/" style="font-size: 19.17px;">leetcode</a> <a href="/tags/medium/" style="font-size: 15.83px;">medium</a> <a href="/tags/meduim/" style="font-size: 10px;">meduim</a> <a href="/tags/mybatis/" style="font-size: 10.83px;">mybatis</a> <a href="/tags/nlp/" style="font-size: 10.83px;">nlp</a> <a href="/tags/nltk/" style="font-size: 10px;">nltk</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/paxos/" style="font-size: 10px;">paxos</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/以太坊/" style="font-size: 14.17px;">以太坊</a> <a href="/tags/其他/" style="font-size: 10px;">其他</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/刷题/" style="font-size: 20px;">刷题</a> <a href="/tags/前端/" style="font-size: 15px;">前端</a> <a href="/tags/区块链/" style="font-size: 16.67px;">区块链</a> <a href="/tags/抽象代数/" style="font-size: 18.33px;">抽象代数</a> <a href="/tags/数学/" style="font-size: 19.17px;">数学</a> <a href="/tags/机器学习/" style="font-size: 20px;">机器学习</a> <a href="/tags/概率统计/" style="font-size: 10px;">概率统计</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/线性代数/" style="font-size: 10.83px;">线性代数</a> <a href="/tags/设计模式/" style="font-size: 11.67px;">设计模式</a>
         </div>
     </div>
 
